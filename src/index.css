@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@theme {
+  --color-lime-400: #a3e635;
+  --color-lime-500: #84cc16;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-zinc-950, #09090b);
+    color: var(--color-slate-50, #f8fafc);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
