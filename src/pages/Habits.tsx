@@ -3,10 +3,19 @@ import { Check, X, Flame } from 'lucide-react';
 
 export default function Habits() {
   const [habits, setHabits] = useState([
-    { id: 1, name: 'Focused Study (3 hrs)', streak: 12, completedToday: true },
-    { id: 2, name: 'Coding Practice', streak: 5, completedToday: false },
-    { id: 3, name: 'Rugby/Gym', streak: 21, completedToday: true },
-    { id: 4, name: 'Adequate Sleep', streak: 4, completedToday: false },
+    { id: 1, name: "Check today's priorities", streak: 0, completedToday: false },
+    { id: 2, name: 'Complete Study Block 1', streak: 0, completedToday: false },
+    { id: 3, name: 'Complete Study Block 2', streak: 0, completedToday: false },
+    { id: 4, name: 'Complete practical/problem-solving block', streak: 0, completedToday: false },
+    { id: 5, name: 'Complete short revision', streak: 0, completedToday: false },
+    { id: 6, name: 'Record study sessions', streak: 0, completedToday: false },
+    { id: 7, name: 'Complete planned gym session OR recovery day', streak: 0, completedToday: false },
+    { id: 8, name: 'Eat regular balanced meals', streak: 0, completedToday: false },
+    { id: 9, name: 'Drink enough water', streak: 0, completedToday: false },
+    { id: 10, name: 'Record important training/recovery notes', streak: 0, completedToday: false },
+    { id: 11, name: '10-minute room/desk reset', streak: 0, completedToday: false },
+    { id: 12, name: "Review tomorrow's priorities", streak: 0, completedToday: false },
+    { id: 13, name: 'Complete daily check-in', streak: 0, completedToday: false },
   ]);
 
   const toggleHabit = (id: number) => {

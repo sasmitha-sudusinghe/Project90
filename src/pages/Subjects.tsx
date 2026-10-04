@@ -3,10 +3,30 @@ import { Plus, Book, CheckCircle, Circle } from 'lucide-react';
 
 export default function Subjects() {
   const [subjects] = useState([
-    { id: 1, name: 'Data Structures', code: 'CS201', credits: 4, chapters: [
-      { id: 101, name: 'Trees', completed: true },
-      { id: 102, name: 'Graphs', completed: false },
-    ] }
+    { id: 1, name: 'KBS (Knowledge Based Systems)', code: 'KBS', credits: 3, chapters: [
+      { id: 101, name: 'Introductory Theory', completed: false },
+      { id: 102, name: 'Practical Exercise 1', completed: false },
+    ] },
+    { id: 2, name: 'Computer Security', code: 'SEC', credits: 3, chapters: [
+      { id: 201, name: 'Syllabus Overview', completed: false },
+      { id: 202, name: 'First Major Topic', completed: false },
+    ] },
+    { id: 3, name: 'Mobile Communication', code: 'MOB', credits: 3, chapters: [
+      { id: 301, name: 'Theory Chapters', completed: false },
+      { id: 302, name: 'Practical Topics', completed: false },
+    ] },
+    { id: 4, name: 'Digital Image Processing', code: 'DIP', credits: 3, chapters: [
+      { id: 401, name: 'Theory Chapters', completed: false },
+      { id: 402, name: 'Practical Topics', completed: false },
+    ] },
+    { id: 5, name: 'Software Quality Assurance', code: 'SQA', credits: 3, chapters: [
+      { id: 501, name: 'Syllabus Overview', completed: false },
+      { id: 502, name: 'Major Concepts', completed: false },
+    ] },
+    { id: 6, name: 'Group Project', code: 'PRJ', credits: 4, chapters: [
+      { id: 601, name: 'Project Requirements', completed: false },
+      { id: 602, name: 'Task List & Deliverables', completed: false },
+    ] },
   ]);
 
   return (
