@@ -6,6 +6,7 @@ type TrainingEvent = {
   type: string;
   date: string;
   title: string;
+  details?: string;
 };
 
 export default function Training() {
@@ -37,6 +38,21 @@ export default function Training() {
       title: title
     };
     setEvents([...events, newEvent]);
+  };
+
+  const addFourDaySplit = () => {
+    const split = ['Upper Body Power', 'Lower Body Power', 'Push Hypertrophy', 'Pull Hypertrophy'];
+    const newEvents = split.map((title, index) => {
+      const d = new Date();
+      d.setDate(d.getDate() + index);
+      return {
+        id: Date.now() + index,
+        type: 'gym',
+        date: d.toISOString().split('T')[0],
+        title: title
+      };
+    });
+    setEvents([...events, ...newEvents]);
   };
 
   const removeEvent = (id: number) => {
@@ -75,7 +91,10 @@ export default function Training() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-white">{ev.title}</h4>
-                      <span className="text-xs text-zinc-400">{ev.date}</span>
+                      <div className="flex items-center space-x-2 mt-0.5">
+                        <span className="text-xs text-zinc-400">{ev.date}</span>
+                        {ev.details && <span className="text-xs text-blue-400 px-2 py-0.5 bg-blue-400/10 rounded-full">{ev.details}</span>}
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center space-x-4">
@@ -110,11 +129,16 @@ export default function Training() {
             </button>
             
             <button onClick={() => {
+              const weight = window.prompt('Enter weight (e.g. 85kg):');
+              const sleep = window.prompt('Enter sleep duration (e.g. 7.5h):');
+              if (!weight && !sleep) return;
+              
               const newEvent = {
                 id: Date.now(),
                 type: 'recovery',
                 date: new Date().toISOString().split('T')[0],
-                title: 'Recovery & Metrics'
+                title: 'Body Metrics Logged',
+                details: `${weight ? `Weight: ${weight}` : ''} ${sleep ? `| Sleep: ${sleep}` : ''}`.trim().replace(/^\| | \|$/g, '')
               };
               setEvents([...events, newEvent]);
             }} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500/50 transition-colors text-left group">
@@ -122,6 +146,14 @@ export default function Training() {
               <div>
                 <div className="font-semibold text-white">Log Body Metrics</div>
                 <div className="text-sm text-zinc-400">Weight, sleep, and recovery notes</div>
+              </div>
+            </button>
+
+            <button onClick={addFourDaySplit} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-purple-500/50 transition-colors text-left group">
+              <Calendar className="text-zinc-500 group-hover:text-purple-400 transition-colors mr-4" size={24} />
+              <div>
+                <div className="font-semibold text-white">Add 4-Day Gym Split</div>
+                <div className="text-sm text-zinc-400">Auto-schedule Upper/Lower/Push/Pull</div>
               </div>
             </button>
           </div>

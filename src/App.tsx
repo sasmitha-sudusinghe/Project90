@@ -85,7 +85,8 @@ function Dashboard() {
     { 
       id: 'days', 
       label: 'Days Remaining', 
-      value: calculateDaysRemaining().toString(), 
+      value: calculateDaysRemaining().toString(),
+      icon: <Clock className="text-blue-400" size={24} />,
       onClick: () => {
         const newDate = prompt('Enter target date for countdown (YYYY-MM-DD):', targetDate);
         if (newDate && !isNaN(new Date(newDate).getTime())) setTargetDate(newDate);
@@ -94,7 +95,8 @@ function Dashboard() {
     { 
       id: 'study', 
       label: 'Study Hours', 
-      value: studyHours, 
+      value: studyHours,
+      icon: <BookOpen className="text-lime-400" size={24} />,
       onClick: () => {
         const newVal = prompt('Enter study hours:', studyHours);
         if (newVal !== null) setStudyHours(newVal);
@@ -103,7 +105,8 @@ function Dashboard() {
     { 
       id: 'gym', 
       label: 'Gym Sessions', 
-      value: gymSessions, 
+      value: gymSessions,
+      icon: <Dumbbell className="text-orange-400" size={24} />,
       onClick: () => {
         const newVal = prompt('Enter gym sessions:', gymSessions);
         if (newVal !== null) setGymSessions(newVal);
@@ -112,7 +115,8 @@ function Dashboard() {
     { 
       id: 'habit', 
       label: 'Habit Score', 
-      value: habitScore, 
+      value: habitScore,
+      icon: <BarChart className="text-purple-400" size={24} />,
       onClick: () => {
         const newVal = prompt('Enter habit score:', habitScore);
         if (newVal !== null) setHabitScore(newVal);
@@ -121,22 +125,112 @@ function Dashboard() {
   ];
 
   return (
-    <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <div>
+        <h1 className="text-3xl font-bold text-white mb-2">Welcome back!</h1>
+        <p className="text-zinc-400">Here's your Project 90 overview for today.</p>
+      </div>
+
+      {/* Stats Grid */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
         {dashboardStats.map((stat) => (
-          <div key={stat.id} className="relative p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/30 transition-colors group">
-            <h3 className="text-sm font-medium text-zinc-400">{stat.label}</h3>
-            <p className="mt-2 text-3xl font-bold text-white">{stat.value}</p>
+          <div key={stat.id} className="relative p-6 bg-zinc-900/80 backdrop-blur-sm border border-zinc-800/50 rounded-2xl hover:border-lime-500/30 hover:bg-zinc-900 transition-all group overflow-hidden shadow-lg shadow-black/20">
+            <div className="absolute -right-4 -top-4 opacity-5 group-hover:scale-110 transition-transform duration-500 pointer-events-none">
+               {stat.icon}
+            </div>
+            <div className="flex items-center justify-between mb-4">
+              <div className="p-3 bg-zinc-950 rounded-xl border border-zinc-800 shadow-inner">
+                {stat.icon}
+              </div>
+            </div>
+            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider">{stat.label}</h3>
+            <p className="mt-1 text-4xl font-black text-white tracking-tight">{stat.value}</p>
             <button 
               onClick={stat.onClick}
-              className="absolute top-4 right-4 text-zinc-500 hover:text-lime-400 opacity-0 group-hover:opacity-100 transition-all bg-zinc-800 p-1.5 rounded-lg"
+              className="absolute top-6 right-6 text-zinc-500 hover:text-white opacity-0 group-hover:opacity-100 transition-all bg-zinc-800 hover:bg-zinc-700 p-2 rounded-lg"
               title={`Edit ${stat.label}`}
             >
               <Edit2 size={16} />
             </button>
           </div>
         ))}
+      </div>
+
+      {/* Additional Dashboard Content */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Today's Focus */}
+        <div className="lg:col-span-2 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/50 rounded-2xl p-8 shadow-xl">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="text-xl font-bold text-white flex items-center">
+              <CheckSquare className="text-lime-500 mr-3" size={24} />
+              Today's Focus
+            </h2>
+            <span className="px-3 py-1 bg-lime-500/10 text-lime-400 text-xs font-bold rounded-full border border-lime-500/20">MUST DO</span>
+          </div>
+          
+          <div className="space-y-5">
+            {[
+              { title: 'Complete Study Block 1 (Theory)', subject: 'Computer Security', time: '60 min' },
+              { title: 'Practical / Problem Solving', subject: 'KBS', time: '60 min' },
+              { title: 'Planned Gym Session', subject: 'Upper Body Power', time: '45 min' }
+            ].map((task, i) => (
+              <div key={i} className="flex items-center p-4 bg-zinc-950/50 border border-zinc-800/50 rounded-xl hover:border-zinc-700 transition-colors group cursor-pointer">
+                <div className="w-6 h-6 rounded-md border-2 border-zinc-700 group-hover:border-lime-500 mr-4 flex-shrink-0 transition-colors" />
+                <div className="flex-1">
+                  <h4 className="text-white font-medium">{task.title}</h4>
+                  <p className="text-zinc-500 text-sm mt-0.5">{task.subject}</p>
+                </div>
+                <div className="text-sm font-semibold text-zinc-600 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">
+                  {task.time}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Weekly Progress */}
+        <div className="bg-zinc-900 border border-zinc-800/50 rounded-2xl p-8 shadow-xl flex flex-col">
+          <h2 className="text-xl font-bold text-white mb-8 flex items-center">
+            <BarChart className="text-blue-500 mr-3" size={24} />
+            Weekly Progress
+          </h2>
+          
+          <div className="flex-1 space-y-8">
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-zinc-400 font-medium">Study Blocks</span>
+                <span className="text-lime-400 font-bold">8 / 12</span>
+              </div>
+              <div className="w-full bg-zinc-950 h-3 rounded-full overflow-hidden border border-zinc-800">
+                <div className="bg-lime-500 h-full rounded-full" style={{ width: '66%' }} />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-zinc-400 font-medium">Gym Sessions</span>
+                <span className="text-blue-400 font-bold">2 / 3</span>
+              </div>
+              <div className="w-full bg-zinc-950 h-3 rounded-full overflow-hidden border border-zinc-800">
+                <div className="bg-blue-500 h-full rounded-full" style={{ width: '66%' }} />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between text-sm mb-2">
+                <span className="text-zinc-400 font-medium">Habit Consistency</span>
+                <span className="text-purple-400 font-bold">92%</span>
+              </div>
+              <div className="w-full bg-zinc-950 h-3 rounded-full overflow-hidden border border-zinc-800">
+                <div className="bg-purple-500 h-full rounded-full" style={{ width: '92%' }} />
+              </div>
+            </div>
+          </div>
+          
+          <button className="w-full py-3 mt-8 bg-zinc-950 hover:bg-zinc-800 text-zinc-300 font-semibold rounded-xl border border-zinc-800 transition-colors">
+            View Full Report
+          </button>
+        </div>
       </div>
     </div>
   );
