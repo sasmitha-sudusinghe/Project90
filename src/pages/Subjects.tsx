@@ -13,7 +13,7 @@ export default function Subjects() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">Subjects & Syllabus</h1>
-        <button className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
+        <button onClick={() => alert('Add Subject dialog')} className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
           <Plus size={18} className="mr-2" /> Add Subject
         </button>
       </div>
@@ -37,14 +37,14 @@ export default function Subjects() {
               {subject.chapters.map(chapter => (
                 <div key={chapter.id} className="flex items-center justify-between bg-zinc-950/50 hover:bg-zinc-950 p-3 rounded-lg border border-zinc-800/50 transition-colors cursor-pointer group">
                   <div className="flex items-center">
-                    <button className="text-zinc-600 group-hover:text-lime-400 transition mr-3">
+                    <button onClick={() => alert('Chapter toggled')} className="text-zinc-600 group-hover:text-lime-400 transition mr-3">
                       {chapter.completed ? <CheckCircle className="text-lime-500" size={20} /> : <Circle size={20} />}
                     </button>
                     <span className={chapter.completed ? "text-zinc-500 line-through" : "text-zinc-200"}>{chapter.name}</span>
                   </div>
                 </div>
               ))}
-              <button className="text-sm font-medium text-lime-500 hover:text-lime-400 flex items-center mt-4 transition-colors">
+              <button onClick={() => alert('Add Chapter dialog')} className="text-sm font-medium text-lime-500 hover:text-lime-400 flex items-center mt-4 transition-colors">
                 <Plus size={16} className="mr-1" /> Add Chapter
               </button>
             </div>

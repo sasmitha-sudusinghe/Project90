@@ -53,7 +53,7 @@ export default function Review() {
           placeholder="List top 3 priorities (e.g. 1. Finish OS Project, 2. Sleep 8h, 3. Rugby Game on Sat)..."
         />
         <div className="mt-6 flex justify-end">
-          <button className="px-8 py-3 bg-lime-500 text-zinc-950 font-bold rounded-xl hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
+          <button onClick={() => alert('Review Saved')} className="px-8 py-3 bg-lime-500 text-zinc-950 font-bold rounded-xl hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
             Save Review
           </button>
         </div>

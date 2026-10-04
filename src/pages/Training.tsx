@@ -20,7 +20,7 @@ export default function Training() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">Rugby & Gym Tracking</h1>
-        <button className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
+        <button onClick={() => alert('Schedule opened')} className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
           <Plus size={18} className="mr-2" /> Schedule
         </button>
       </div>
@@ -40,7 +40,7 @@ export default function Training() {
                     <span className="text-xs text-zinc-400">{ev.date}</span>
                   </div>
                 </div>
-                <button className="text-sm font-medium text-lime-500 hover:text-lime-400">View</button>
+                <button onClick={() => alert('Viewing Details')} className="text-sm font-medium text-lime-500 hover:text-lime-400">View</button>
               </div>
             ))}
           </div>
@@ -49,7 +49,7 @@ export default function Training() {
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-zinc-300">Quick Log</h2>
           <div className="grid gap-4">
-            <button className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/50 transition-colors text-left group">
+            <button onClick={() => alert('Open Mobility Flow')} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/50 transition-colors text-left group">
               <Dumbbell className="text-zinc-500 group-hover:text-lime-400 transition-colors mr-4" size={24} />
               <div>
                 <div className="font-semibold text-white">Log Gym Workout</div>
@@ -57,7 +57,7 @@ export default function Training() {
               </div>
             </button>
             
-            <button className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500/50 transition-colors text-left group">
+            <button onClick={() => alert('Open Pre-hab Protocol')} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500/50 transition-colors text-left group">
               <Activity className="text-zinc-500 group-hover:text-blue-400 transition-colors mr-4" size={24} />
               <div>
                 <div className="font-semibold text-white">Log Body Metrics</div>

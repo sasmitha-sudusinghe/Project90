@@ -2,12 +2,18 @@ import { useState } from 'react';
 import { Check, X, Flame } from 'lucide-react';
 
 export default function Habits() {
-  const [habits] = useState([
+  const [habits, setHabits] = useState([
     { id: 1, name: 'Focused Study (3 hrs)', streak: 12, completedToday: true },
     { id: 2, name: 'Coding Practice', streak: 5, completedToday: false },
     { id: 3, name: 'Rugby/Gym', streak: 21, completedToday: true },
     { id: 4, name: 'Adequate Sleep', streak: 4, completedToday: false },
   ]);
+
+  const toggleHabit = (id: number) => {
+    setHabits(habits.map(habit => 
+      habit.id === id ? { ...habit, completedToday: !habit.completedToday } : habit
+    ));
+  };
 
   return (
     <div className="space-y-8">
@@ -20,6 +26,7 @@ export default function Habits() {
           <div key={habit.id} className="flex items-center justify-between p-5 bg-zinc-900 border border-zinc-800/50 rounded-xl hover:border-zinc-700 transition-colors">
             <div className="flex items-center space-x-5">
               <button 
+                onClick={() => toggleHabit(habit.id)}
                 className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all ${
                   habit.completedToday 
                     ? 'bg-lime-500 text-zinc-950 shadow-lg shadow-lime-500/20 scale-105' 

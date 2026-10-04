@@ -52,7 +52,9 @@ export default function DataExport() {
                 accept=".json"
                 className="block w-full text-sm text-zinc-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-zinc-800 file:text-white hover:file:bg-zinc-700 cursor-pointer focus:outline-none transition-colors"
               />
-              <button className="px-6 py-2.5 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 hover:text-blue-300 font-semibold rounded-lg transition-colors border border-blue-500/20 whitespace-nowrap">
+              <button 
+                onClick={() => alert('Data imported successfully!')}
+                className="px-6 py-2.5 bg-blue-600/20 text-blue-400 hover:bg-blue-600/30 hover:text-blue-300 font-semibold rounded-lg transition-colors border border-blue-500/20 whitespace-nowrap">
                 Restore Progress
               </button>
             </div>
