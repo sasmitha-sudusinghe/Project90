@@ -1,12 +1,30 @@
 import { useState } from 'react';
-import { Calendar, Dumbbell, Activity, Plus } from 'lucide-react';
+import { Calendar, Dumbbell, Activity, Plus, Trash2 } from 'lucide-react';
 
 export default function Training() {
-  const [events] = useState([
+  const [events, setEvents] = useState([
     { id: 1, type: 'rugby_practice', date: '2026-10-02', title: 'Team Practice' },
     { id: 2, type: 'gym', date: '2026-10-03', title: 'Upper Body Power' },
     { id: 3, type: 'recovery', date: '2026-10-04', title: 'Active Recovery' },
   ]);
+
+  const addEvent = () => {
+    const title = window.prompt('Enter event title (e.g. Leg Day):');
+    if (!title) return;
+    const typeStr = window.prompt('Enter type (gym/recovery/rugby_practice):', 'gym');
+    
+    const newEvent = {
+      id: Date.now(),
+      type: typeStr || 'gym',
+      date: new Date().toISOString().split('T')[0],
+      title: title
+    };
+    setEvents([...events, newEvent]);
+  };
+
+  const removeEvent = (id: number) => {
+    setEvents(events.filter(e => e.id !== id));
+  };
 
   const getIcon = (type: string) => {
     switch (type) {
@@ -20,7 +38,7 @@ export default function Training() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">Rugby & Gym Tracking</h1>
-        <button onClick={() => alert('Schedule opened')} className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
+        <button onClick={addEvent} className="flex items-center px-4 py-2 bg-lime-500 text-zinc-950 font-semibold rounded-lg hover:bg-lime-400 transition shadow-lg shadow-lime-500/20">
           <Plus size={18} className="mr-2" /> Schedule
         </button>
       </div>
@@ -29,20 +47,29 @@ export default function Training() {
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-zinc-300">Upcoming Schedule</h2>
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-            {events.map((ev, i) => (
-              <div key={ev.id} className={`p-4 flex items-center justify-between ${i !== events.length - 1 ? 'border-b border-zinc-800/50' : ''}`}>
-                <div className="flex items-center">
-                  <div className="w-12 h-12 bg-zinc-950 rounded-lg flex items-center justify-center mr-4">
-                    {getIcon(ev.type)}
+            {events.length === 0 ? (
+              <div className="p-6 text-center text-zinc-500">No upcoming events. Click Schedule to add one.</div>
+            ) : (
+              events.map((ev, i) => (
+                <div key={ev.id} className={`p-4 flex items-center justify-between ${i !== events.length - 1 ? 'border-b border-zinc-800/50' : ''}`}>
+                  <div className="flex items-center">
+                    <div className="w-12 h-12 bg-zinc-950 rounded-lg flex items-center justify-center mr-4">
+                      {getIcon(ev.type)}
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-white">{ev.title}</h4>
+                      <span className="text-xs text-zinc-400">{ev.date}</span>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-white">{ev.title}</h4>
-                    <span className="text-xs text-zinc-400">{ev.date}</span>
+                  <div className="flex items-center space-x-4">
+                    <button onClick={() => alert('Viewing Details')} className="text-sm font-medium text-lime-500 hover:text-lime-400">View</button>
+                    <button onClick={() => removeEvent(ev.id)} className="text-zinc-500 hover:text-red-500 transition-colors" title="Remove event">
+                      <Trash2 size={18} />
+                    </button>
                   </div>
                 </div>
-                <button onClick={() => alert('Viewing Details')} className="text-sm font-medium text-lime-500 hover:text-lime-400">View</button>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
