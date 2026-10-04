@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, Clock, Dumbbell, CheckSquare, BarChart, Menu, X, Database } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Clock, Dumbbell, CheckSquare, BarChart, Menu, X, Database, Edit2 } from 'lucide-react';
 import Subjects from './pages/Subjects';
 import StudyTimer from './pages/StudyTimer';
 import Training from './pages/Training';
@@ -64,21 +64,72 @@ function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean, setMobile
 }
 
 function Dashboard() {
-  const stats = [
-    { label: 'Days Remaining', value: '89' },
-    { label: 'Study Hours', value: '12h 45m' },
-    { label: 'Gym Sessions', value: '4' },
-    { label: 'Habit Score', value: '92%' }
+  const [targetDate, setTargetDate] = useState('2026-12-31');
+  const [studyHours, setStudyHours] = useState('12h 45m');
+  const [gymSessions, setGymSessions] = useState('4');
+  const [habitScore, setHabitScore] = useState('92%');
+
+  const calculateDaysRemaining = () => {
+    const target = new Date(targetDate);
+    const diffTime = target.getTime() - new Date().getTime();
+    const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return days > 0 ? days : 0;
+  };
+
+  const dashboardStats = [
+    { 
+      id: 'days', 
+      label: 'Days Remaining', 
+      value: calculateDaysRemaining().toString(), 
+      onClick: () => {
+        const newDate = prompt('Enter target date for countdown (YYYY-MM-DD):', targetDate);
+        if (newDate && !isNaN(new Date(newDate).getTime())) setTargetDate(newDate);
+      }
+    },
+    { 
+      id: 'study', 
+      label: 'Study Hours', 
+      value: studyHours, 
+      onClick: () => {
+        const newVal = prompt('Enter study hours:', studyHours);
+        if (newVal !== null) setStudyHours(newVal);
+      }
+    },
+    { 
+      id: 'gym', 
+      label: 'Gym Sessions', 
+      value: gymSessions, 
+      onClick: () => {
+        const newVal = prompt('Enter gym sessions:', gymSessions);
+        if (newVal !== null) setGymSessions(newVal);
+      }
+    },
+    { 
+      id: 'habit', 
+      label: 'Habit Score', 
+      value: habitScore, 
+      onClick: () => {
+        const newVal = prompt('Enter habit score:', habitScore);
+        if (newVal !== null) setHabitScore(newVal);
+      }
+    }
   ];
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, i) => (
-          <div key={i} className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/30 transition-colors">
+        {dashboardStats.map((stat) => (
+          <div key={stat.id} className="relative p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/30 transition-colors group">
             <h3 className="text-sm font-medium text-zinc-400">{stat.label}</h3>
             <p className="mt-2 text-3xl font-bold text-white">{stat.value}</p>
+            <button 
+              onClick={stat.onClick}
+              className="absolute top-4 right-4 text-zinc-500 hover:text-lime-400 opacity-0 group-hover:opacity-100 transition-all bg-zinc-800 p-1.5 rounded-lg"
+              title={`Edit ${stat.label}`}
+            >
+              <Edit2 size={16} />
+            </button>
           </div>
         ))}
       </div>
