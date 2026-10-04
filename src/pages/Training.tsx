@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Dumbbell, Activity, Plus, Trash2 } from 'lucide-react';
 
+type TrainingEvent = {
+  id: number;
+  type: string;
+  date: string;
+  title: string;
+};
+
 export default function Training() {
-  const [events, setEvents] = useState(() => {
+  const [events, setEvents] = useState<TrainingEvent[]>(() => {
     const saved = localStorage.getItem('p90_trainingEvents');
     if (saved) {
       try { return JSON.parse(saved); } catch (e) { }
