@@ -76,7 +76,15 @@ export default function Training() {
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-zinc-300">Quick Log</h2>
           <div className="grid gap-4">
-            <button onClick={() => alert('Open Mobility Flow')} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/50 transition-colors text-left group">
+            <button onClick={() => {
+              const newEvent = {
+                id: Date.now(),
+                type: 'gym',
+                date: new Date().toISOString().split('T')[0],
+                title: 'Gym Workout'
+              };
+              setEvents([...events, newEvent]);
+            }} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/50 transition-colors text-left group">
               <Dumbbell className="text-zinc-500 group-hover:text-lime-400 transition-colors mr-4" size={24} />
               <div>
                 <div className="font-semibold text-white">Log Gym Workout</div>
@@ -84,7 +92,15 @@ export default function Training() {
               </div>
             </button>
             
-            <button onClick={() => alert('Open Pre-hab Protocol')} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500/50 transition-colors text-left group">
+            <button onClick={() => {
+              const newEvent = {
+                id: Date.now(),
+                type: 'recovery',
+                date: new Date().toISOString().split('T')[0],
+                title: 'Recovery & Metrics'
+              };
+              setEvents([...events, newEvent]);
+            }} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-blue-500/50 transition-colors text-left group">
               <Activity className="text-zinc-500 group-hover:text-blue-400 transition-colors mr-4" size={24} />
               <div>
                 <div className="font-semibold text-white">Log Body Metrics</div>
