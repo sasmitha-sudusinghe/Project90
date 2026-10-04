@@ -64,14 +64,21 @@ function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean, setMobile
 }
 
 function Dashboard() {
+  const stats = [
+    { label: 'Days Remaining', value: '89' },
+    { label: 'Study Hours', value: '12h 45m' },
+    { label: 'Gym Sessions', value: '4' },
+    { label: 'Habit Score', value: '92%' }
+  ];
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-        {['Days Remaining', 'Study Hours', 'Gym Sessions', 'Habit Score'].map((stat, i) => (
-          <div key={i} className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl">
-            <h3 className="text-sm font-medium text-zinc-400">{stat}</h3>
-            <p className="mt-2 text-3xl font-bold text-white">-</p>
+        {stats.map((stat, i) => (
+          <div key={i} className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/30 transition-colors">
+            <h3 className="text-sm font-medium text-zinc-400">{stat.label}</h3>
+            <p className="mt-2 text-3xl font-bold text-white">{stat.value}</p>
           </div>
         ))}
       </div>
