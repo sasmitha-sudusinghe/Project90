@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, Dumbbell, Activity, Plus, Trash2 } from 'lucide-react';
 
 export default function Training() {
-  const [events, setEvents] = useState([
-    { id: 1, type: 'rugby_practice', date: '2026-10-02', title: 'Team Practice' },
-    { id: 2, type: 'gym', date: '2026-10-03', title: 'Upper Body Power' },
-    { id: 3, type: 'recovery', date: '2026-10-04', title: 'Active Recovery' },
-  ]);
+  const [events, setEvents] = useState(() => {
+    const saved = localStorage.getItem('p90_trainingEvents');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) { }
+    }
+    return [
+      { id: 1, type: 'rugby_practice', date: '2026-10-02', title: 'Team Practice' },
+      { id: 2, type: 'gym', date: '2026-10-03', title: 'Upper Body Power' },
+      { id: 3, type: 'recovery', date: '2026-10-04', title: 'Active Recovery' },
+    ];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('p90_trainingEvents', JSON.stringify(events));
+  }, [events]);
 
   const addEvent = () => {
     const title = window.prompt('Enter event title (e.g. Leg Day):');

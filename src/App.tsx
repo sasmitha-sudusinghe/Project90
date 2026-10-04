@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import { LayoutDashboard, BookOpen, Clock, Dumbbell, CheckSquare, BarChart, Menu, X, Database, Edit2 } from 'lucide-react';
 import Subjects from './pages/Subjects';
@@ -64,10 +64,15 @@ function Sidebar({ mobileOpen, setMobileOpen }: { mobileOpen: boolean, setMobile
 }
 
 function Dashboard() {
-  const [targetDate, setTargetDate] = useState('2026-12-31');
-  const [studyHours, setStudyHours] = useState('12h 45m');
-  const [gymSessions, setGymSessions] = useState('4');
-  const [habitScore, setHabitScore] = useState('92%');
+  const [targetDate, setTargetDate] = useState(() => localStorage.getItem('p90_targetDate') || '2026-12-31');
+  const [studyHours, setStudyHours] = useState(() => localStorage.getItem('p90_studyHours') || '12h 45m');
+  const [gymSessions, setGymSessions] = useState(() => localStorage.getItem('p90_gymSessions') || '4');
+  const [habitScore, setHabitScore] = useState(() => localStorage.getItem('p90_habitScore') || '92%');
+
+  useEffect(() => { localStorage.setItem('p90_targetDate', targetDate); }, [targetDate]);
+  useEffect(() => { localStorage.setItem('p90_studyHours', studyHours); }, [studyHours]);
+  useEffect(() => { localStorage.setItem('p90_gymSessions', gymSessions); }, [gymSessions]);
+  useEffect(() => { localStorage.setItem('p90_habitScore', habitScore); }, [habitScore]);
 
   const calculateDaysRemaining = () => {
     const target = new Date(targetDate);
