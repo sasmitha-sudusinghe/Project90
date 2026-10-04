@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { LayoutDashboard, BookOpen, Clock, Dumbbell, CheckSquare, BarChart, Menu, X, Database, Edit2 } from 'lucide-react';
+import { LayoutDashboard, BookOpen, Clock, Dumbbell, CheckSquare, BarChart, Menu, X, Database, Edit2, Plus, Trash2, Check } from 'lucide-react';
+
+type FocusTask = {
+  id: number;
+  title: string;
+  subject: string;
+  time: string;
+  completed: boolean;
+};
 import Subjects from './pages/Subjects';
 import StudyTimer from './pages/StudyTimer';
 import Training from './pages/Training';
@@ -69,10 +77,40 @@ function Dashboard() {
   const [gymSessions, setGymSessions] = useState(() => localStorage.getItem('p90_gymSessions') || '4');
   const [habitScore, setHabitScore] = useState(() => localStorage.getItem('p90_habitScore') || '92%');
 
+  const [focusTasks, setFocusTasks] = useState<FocusTask[]>(() => {
+    const saved = localStorage.getItem('p90_focusTasks');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return [
+      { id: 1, title: 'Complete Study Block 1 (Theory)', subject: 'Computer Security', time: '60 min', completed: false },
+      { id: 2, title: 'Practical / Problem Solving', subject: 'KBS', time: '60 min', completed: false },
+      { id: 3, title: 'Planned Gym Session', subject: 'Upper Body Power', time: '45 min', completed: false }
+    ];
+  });
+
   useEffect(() => { localStorage.setItem('p90_targetDate', targetDate); }, [targetDate]);
   useEffect(() => { localStorage.setItem('p90_studyHours', studyHours); }, [studyHours]);
   useEffect(() => { localStorage.setItem('p90_gymSessions', gymSessions); }, [gymSessions]);
   useEffect(() => { localStorage.setItem('p90_habitScore', habitScore); }, [habitScore]);
+  useEffect(() => { localStorage.setItem('p90_focusTasks', JSON.stringify(focusTasks)); }, [focusTasks]);
+
+  const toggleFocusTask = (id: number) => {
+    setFocusTasks(tasks => tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+  };
+
+  const addFocusTask = () => {
+    const title = prompt('Task title:');
+    if (!title) return;
+    const subject = prompt('Subject (optional):') || '';
+    const time = prompt('Estimated time (e.g. 60 min):') || '';
+    setFocusTasks([...focusTasks, { id: Date.now(), title, subject, time, completed: false }]);
+  };
+
+  const removeFocusTask = (id: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFocusTasks(tasks => tasks.filter(t => t.id !== id));
+  };
 
   const calculateDaysRemaining = () => {
     const target = new Date(targetDate);
@@ -161,30 +199,44 @@ function Dashboard() {
         {/* Today's Focus */}
         <div className="lg:col-span-2 bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-800/50 rounded-2xl p-8 shadow-xl">
           <div className="flex items-center justify-between mb-8">
-            <h2 className="text-xl font-bold text-white flex items-center">
-              <CheckSquare className="text-lime-500 mr-3" size={24} />
-              Today's Focus
-            </h2>
-            <span className="px-3 py-1 bg-lime-500/10 text-lime-400 text-xs font-bold rounded-full border border-lime-500/20">MUST DO</span>
+            <div className="flex items-center space-x-3">
+              <h2 className="text-xl font-bold text-white flex items-center">
+                <CheckSquare className="text-lime-500 mr-3" size={24} />
+                Today's Focus
+              </h2>
+              <span className="px-3 py-1 bg-lime-500/10 text-lime-400 text-xs font-bold rounded-full border border-lime-500/20">MUST DO</span>
+            </div>
+            <button onClick={addFocusTask} className="flex items-center text-sm font-medium text-lime-500 hover:text-lime-400 transition-colors">
+              <Plus size={16} className="mr-1" /> Add Task
+            </button>
           </div>
           
           <div className="space-y-5">
-            {[
-              { title: 'Complete Study Block 1 (Theory)', subject: 'Computer Security', time: '60 min' },
-              { title: 'Practical / Problem Solving', subject: 'KBS', time: '60 min' },
-              { title: 'Planned Gym Session', subject: 'Upper Body Power', time: '45 min' }
-            ].map((task, i) => (
-              <div key={i} className="flex items-center p-4 bg-zinc-950/50 border border-zinc-800/50 rounded-xl hover:border-zinc-700 transition-colors group cursor-pointer">
-                <div className="w-6 h-6 rounded-md border-2 border-zinc-700 group-hover:border-lime-500 mr-4 flex-shrink-0 transition-colors" />
-                <div className="flex-1">
-                  <h4 className="text-white font-medium">{task.title}</h4>
-                  <p className="text-zinc-500 text-sm mt-0.5">{task.subject}</p>
+            {focusTasks.length === 0 ? (
+              <div className="text-zinc-500 text-center py-6">No tasks added yet.</div>
+            ) : (
+              focusTasks.map((task) => (
+                <div key={task.id} onClick={() => toggleFocusTask(task.id)} className="flex items-center p-4 bg-zinc-950/50 border border-zinc-800/50 rounded-xl hover:border-zinc-700 transition-colors group cursor-pointer relative overflow-hidden">
+                  <div className={`w-6 h-6 rounded-md border-2 mr-4 flex items-center justify-center flex-shrink-0 transition-colors ${task.completed ? 'bg-lime-500 border-lime-500' : 'border-zinc-700 group-hover:border-lime-500'}`}>
+                    {task.completed && <Check size={14} className="text-zinc-950 font-bold" strokeWidth={4} />}
+                  </div>
+                  <div className={`flex-1 transition-opacity ${task.completed ? 'opacity-50 line-through' : ''}`}>
+                    <h4 className="text-white font-medium">{task.title}</h4>
+                    <p className="text-zinc-500 text-sm mt-0.5">{task.subject}</p>
+                  </div>
+                  <div className="flex items-center space-x-3">
+                    {task.time && (
+                      <div className="text-sm font-semibold text-zinc-600 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800 transition-opacity">
+                        {task.time}
+                      </div>
+                    )}
+                    <button onClick={(e) => removeFocusTask(task.id, e)} className="text-zinc-500 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" title="Remove task">
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
                 </div>
-                <div className="text-sm font-semibold text-zinc-600 bg-zinc-900 px-3 py-1.5 rounded-lg border border-zinc-800">
-                  {task.time}
-                </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
 
@@ -227,7 +279,7 @@ function Dashboard() {
             </div>
           </div>
           
-          <button className="w-full py-3 mt-8 bg-zinc-950 hover:bg-zinc-800 text-zinc-300 font-semibold rounded-xl border border-zinc-800 transition-colors">
+          <button onClick={() => alert('Full report is not yet implemented.')} className="w-full py-3 mt-8 bg-zinc-950 hover:bg-zinc-800 text-zinc-300 font-semibold rounded-xl border border-zinc-800 transition-colors">
             View Full Report
           </button>
         </div>
