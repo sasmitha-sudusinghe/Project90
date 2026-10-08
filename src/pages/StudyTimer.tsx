@@ -4,6 +4,25 @@ import { Play, Pause, Square } from 'lucide-react';
 export default function StudyTimer() {
   const [timeLeft, setTimeLeft] = useState(25 * 60);
   const [isActive, setIsActive] = useState(false);
+  const [subjects, setSubjects] = useState<any[]>([]);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('p90_subjects');
+    if (saved) {
+      try {
+        setSubjects(JSON.parse(saved));
+      } catch (e) {}
+    } else {
+      setSubjects([
+        { id: 1, name: 'KBS (Knowledge Based Systems)', code: 'KBS' },
+        { id: 2, name: 'Computer Security', code: 'SEC' },
+        { id: 3, name: 'Mobile Communication', code: 'MOB' },
+        { id: 4, name: 'Digital Image Processing', code: 'DIP' },
+        { id: 5, name: 'Software Quality Assurance', code: 'SQA' },
+        { id: 6, name: 'Group Project', code: 'PRJ' }
+      ]);
+    }
+  }, []);
 
   useEffect(() => {
     let interval: ReturnType<typeof setInterval> | null = null;
@@ -60,7 +79,9 @@ export default function StudyTimer() {
         <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-widest mb-4">Session Details</h3>
         <select className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 text-white mb-4 focus:outline-none focus:border-lime-500/50 transition-colors">
           <option>Select Subject...</option>
-          <option>Data Structures</option>
+          {subjects.map(subject => (
+            <option key={subject.id} value={subject.id}>{subject.name}</option>
+          ))}
         </select>
         <textarea 
           placeholder="Session notes or focus goals..."
