@@ -30,8 +30,28 @@ export default function StudyTimer() {
       interval = setInterval(() => {
         setTimeLeft(time => time - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    } else if (timeLeft === 0 && isActive) {
       setIsActive(false);
+      
+      const current = localStorage.getItem('p90_studyHours') || '0h 25m';
+      const match = current.match(/(\d+)h\s*(\d+)m/);
+      let h = 0;
+      let m = 0;
+      if (match) {
+        h = parseInt(match[1], 10);
+        m = parseInt(match[2], 10);
+      } else {
+        const mMatch = current.match(/(\d+)m/);
+        if (mMatch) m = parseInt(mMatch[1], 10);
+        const hMatch = current.match(/(\d+)h/);
+        if (hMatch && !match) h = parseInt(hMatch[1], 10);
+      }
+      
+      m += 25;
+      h += Math.floor(m / 60);
+      m = m % 60;
+      
+      localStorage.setItem('p90_studyHours', `${h}h ${m}m`);
     }
     return () => {
       if (interval) clearInterval(interval);

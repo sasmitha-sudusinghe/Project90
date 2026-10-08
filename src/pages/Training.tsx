@@ -38,6 +38,10 @@ export default function Training() {
       title: title
     };
     setEvents([...events, newEvent]);
+    if (newEvent.type === 'gym') {
+      const current = parseInt(localStorage.getItem('p90_gymSessions') || '0', 10);
+      localStorage.setItem('p90_gymSessions', (current + 1).toString());
+    }
   };
 
   const addFourDaySplit = () => {
@@ -53,6 +57,8 @@ export default function Training() {
       };
     });
     setEvents([...events, ...newEvents]);
+    const current = parseInt(localStorage.getItem('p90_gymSessions') || '0', 10);
+    localStorage.setItem('p90_gymSessions', (current + 4).toString());
   };
 
   const removeEvent = (id: number) => {
@@ -120,6 +126,8 @@ export default function Training() {
                 title: 'Gym Workout'
               };
               setEvents([...events, newEvent]);
+              const current = parseInt(localStorage.getItem('p90_gymSessions') || '0', 10);
+              localStorage.setItem('p90_gymSessions', (current + 1).toString());
             }} className="flex items-center p-4 bg-zinc-900 border border-zinc-800 rounded-xl hover:border-lime-500/50 transition-colors text-left group">
               <Dumbbell className="text-zinc-500 group-hover:text-lime-400 transition-colors mr-4" size={24} />
               <div>
